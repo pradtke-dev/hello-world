@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include=".github\workflows\main.yaml" />
+  </ItemGroup>
+
 </Project>
