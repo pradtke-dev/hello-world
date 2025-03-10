@@ -65,5 +65,5 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'pradtke-hello-world'
+        app-name: 'as-pradtke-hello-world'
         images: 'ghcr.io/${{ github.repository }}/pradtke-hello-world:${{ github.run_number }}'
