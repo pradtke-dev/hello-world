@@ -4,7 +4,7 @@ WORKDIR /app
 COPY ./publish .
 
 # Expose the port the app runs on
-EXPOSE 8080
+EXPOSE 80
 
 # Set the entry point for the application
 ENTRYPOINT ["dotnet", "Hello.dll"]
