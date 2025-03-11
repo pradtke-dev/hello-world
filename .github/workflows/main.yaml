@@ -8,6 +8,7 @@ on:
 
 env:
   CANDIDATE: ghcr.io/${{ github.repository }}/pradtke-hello-world:candidate
+  LATEST_TAG_APP: ghcr.io/${{ github.repository }}/pradtke-hello-world:${{ github.run_number }}
 
 jobs:
   build:
@@ -63,8 +64,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: read
+      packages: write
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Log in to GitHub Container Registry
       uses: docker/login-action@v3
       with:
@@ -73,10 +80,40 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Start container
+      run: IMAGE=${{ env.CANDIDATE }} docker compose up -d
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: integration-tests/package-lock.json
+    
+    - name: Run integration tests
       run: |
-        pwd
-        ls -l
-        IMAGE=${{ env.CANDIDATE }} docker compose up -d
+        pushd integration-tests
+        npm install
+        npx cypress run
+        popd
+
+    - name: verify
+      if: failure()
+      run: docker compose logs -n 1000
+
+    - name: Upload Cypress artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cypress-artifacts
+        path: |
+          integration-tests/cypress/screenshots
+          integration-tests/cypress/videos
+
+    - name: Tag container as latest    
+      if: success()
+      run: |
+        docker tag $CANDIDATE $LATEST_TAG_APP
+        docker push $LATEST_TAG_APP
 
   deploy:
     runs-on: ubuntu-latest
@@ -91,4 +128,4 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'as-pradtke-hello-world'
-        images: 'ghcr.io/${{ github.repository }}/pradtke-hello-world:${{ github.run_number }}'
+        images: '${{ env.LATEST_TAG_APP }}'
