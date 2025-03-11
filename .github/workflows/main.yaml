@@ -75,8 +75,8 @@ jobs:
     - name: Start container
       run: |
         pwd
-        ls
-        IMAGE=${{ env.CANDIDATE }} docker compose -f docker-compose.yml up -d
+        ls -l
+        IMAGE=${{ env.CANDIDATE }} docker compose up -d
 
   deploy:
     runs-on: ubuntu-latest
