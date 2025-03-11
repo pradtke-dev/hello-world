@@ -128,4 +128,4 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'as-pradtke-hello-world'
-        images: 'ghcr.io/${{ github.repository }}/pradtke-hello-world:${{ github.run_number }}'
+        images: '${{ env.LATEST_TAG_APP }}'
