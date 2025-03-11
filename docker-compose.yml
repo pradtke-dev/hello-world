@@ -1,5 +1,28 @@
 services:
   hello-world:
-    image: ${IMAGE}
+    image: ${IMAGE:-ghcr.io/pradtke-dev/hello-world/pradtke-hello-world:candidate}
     ports:
       - "80:80"
+    links:
+      - sql-db
+    depends_on:
+      - sql-db
+    profiles:
+      - production
+  sql-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
+    profiles:
+      - production
+  sql-db-dev:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
+    ports: 
+      - "1433:1433"
+    profiles:
+      - development
+    
