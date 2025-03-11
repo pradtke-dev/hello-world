@@ -75,7 +75,7 @@ jobs:
     - name: Start container
       run: |
         pwd
-        ls -l
+        ls -l ..
         IMAGE=${{ env.CANDIDATE }} docker compose up -d
 
   deploy:
