@@ -10,4 +10,8 @@
     <Content Include=".github\workflows\main.yaml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="integration-tests\" />
+  </ItemGroup>
+
 </Project>
