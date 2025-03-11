@@ -9,6 +9,7 @@ services:
       - sql-db
     profiles:
       - production
+      - test
   sql-db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -16,6 +17,7 @@ services:
       - ACCEPT_EULA=Y
     profiles:
       - production
+      - test
   sql-db-dev:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
