@@ -1,0 +1,16 @@
+@page
+@model TodoModel
+@{
+    ViewData["Title"] = "todo";
+}
+<h1>@ViewData["Title"]</h1>
+<ul data-cy="todo-list">
+  @foreach (var todo in Model.Todos)
+  {
+    <li>@todo</li>
+  }
+</ul>
+<form method="post">
+  <input data-cy="add-todo" name="todo-text"></input>
+  <button data-cy="submit-todo" type="submit">Add</button>
+</form>
