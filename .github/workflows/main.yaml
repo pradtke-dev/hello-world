@@ -58,8 +58,8 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
       with:
-        context: App
-        file: Dockerfile
+        context: "{{defaultContext}}:App"
+        file: ./Dockerfile
         push: true
         tags: ${{ env.CANDIDATE }}
     
