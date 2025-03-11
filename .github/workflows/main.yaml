@@ -71,8 +71,12 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+    
     - name: Start container
-      run: IMAGE=${{ env.CANDIDATE }} docker compose up -d
+      run: |
+        pwd
+        ls
+        IMAGE=${{ env.CANDIDATE }} docker compose -f docker-compose.yml up -d
 
   deploy:
     runs-on: ubuntu-latest
