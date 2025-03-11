@@ -15,6 +15,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    defaults:
+      run:
+        working-directory: App
 
     steps:
     - name: Checkout code
