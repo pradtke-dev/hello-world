@@ -1,0 +1,5 @@
+services:
+  hello-world:
+    image: ${IMAGE}
+    ports:
+      - "80:80"

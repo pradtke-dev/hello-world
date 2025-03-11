@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  CANDIDATE: ghcr.io/${{ github.repository }}/pradtke-hello-world:candidate
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -55,8 +58,26 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository }}/pradtke-hello-world:${{ github.run_number }}
-        
+        tags: ${{env.CANDIDATE}}
+    
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Start container
+      run: IMAGE=${{env.CANDIDATE}} docker compose up -d
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
     - name: Azure Login
       uses: azure/login@v1
       with:
