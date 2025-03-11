@@ -59,9 +59,9 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: ./Dockerfile
+        file: /App/Dockerfile
         push: true
-        tags: ${{env.CANDIDATE}}
+        tags: ${{ env.CANDIDATE }}
     
   test:
     runs-on: ubuntu-latest
@@ -75,7 +75,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Start container
-      run: IMAGE=${{env.CANDIDATE}} docker compose up -d
+      run: IMAGE=${{ env.CANDIDATE }} docker compose up -d
 
   deploy:
     runs-on: ubuntu-latest
