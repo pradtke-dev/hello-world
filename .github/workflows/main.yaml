@@ -8,6 +8,7 @@ on:
 
 env:
   CANDIDATE: ghcr.io/${{ github.repository }}/pradtke-hello-world:candidate
+  LATEST_TAG_APP: ghcr.io/${{ github.repository }}/pradtke-hello-world:${{ github.run_number }}
 
 jobs:
   build:
@@ -77,6 +78,39 @@ jobs:
     
     - name: Start container
       run: IMAGE=${{ env.CANDIDATE }} docker compose up -d
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: integration-tests/package-lock.json
+    
+    - name: Run integration tests
+      run: |
+        pushd integration-tests
+        npm install
+        npx cypress run
+        popd
+
+    - name: verify
+      if: failure()
+      run: docker compose logs -n 1000
+
+    - name: Upload Cypress artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cypress-artifacts
+        path: |
+          integration-tests/cypress/screenshots
+          integration-tests/cypress/videos
+
+    - name: Tag container as latest    
+      if: success()
+      run: |
+        docker tag $CANDIDATE $LATEST_TAG_APP
+        docker push $LATEST_TAG_APP
 
   deploy:
     runs-on: ubuntu-latest
