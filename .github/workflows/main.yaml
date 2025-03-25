@@ -83,10 +83,9 @@ jobs:
       run: IMAGE=${{ env.CANDIDATE }} ASPNETCORE_ENVIRONMENT=Test docker compose --profile test up -d
 
     - name: Run migrations
-      uses: microsoft/sql-action@v1
-      with:
-        connection-string: Server=sql-db;Database=TodoDb;User Id=sa;Password=yourStrong(!)Password;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True
-        script-path: App/Scripts/up.sql
+      run: |
+        docker cp App/Scripts/up.sql sql-db:/tmp/migration.sql
+        docker exec -i sql-db /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P yourStrong(!)Password -d your_db -i /tmp/migration.sql
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
