@@ -85,6 +85,7 @@ jobs:
     - name: Run migrations
       run: |
         pushd App
+        dotnet tool install dotnet-ef
         dotnet ef database update
         popd
 
