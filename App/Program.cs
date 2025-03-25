@@ -1,7 +1,10 @@
+using Hello.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<ITodoStore, InMemoryTodoStore>();
 
 var app = builder.Build();
 

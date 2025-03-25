@@ -11,6 +11,8 @@
   }
 </ul>
 <form method="post">
-  <input data-cy="add-todo" name="todo-text"></input>
+  <input data-cy="add-todo" name="todo-text"/>
   <button data-cy="submit-todo" type="submit">Add</button>
+
+  <button data-cy="clear-todos" type="submit" asp-page-handler="Clear">Clear</button>
 </form>
