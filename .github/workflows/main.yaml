@@ -80,7 +80,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Start container
-      run: IMAGE=${{ env.CANDIDATE }} docker compose --profile test up -d
+      run: IMAGE=${{ env.CANDIDATE }} ASPNETCORE_ENVIRONMENT=Test docker compose --profile test up -d
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
