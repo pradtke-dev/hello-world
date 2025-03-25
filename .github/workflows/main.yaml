@@ -85,7 +85,7 @@ jobs:
     - name: Run migrations
       uses: microsoft/sql-action@v1
       with:
-        connection-string: ${{ secrets.SQL_CONNECTION_STRING }}
+        connection-string: Server=sql-db;Database=TodoDb;User Id=sa;Password=yourStrong(!)Password;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True
         script-path: App/Scripts/up.sql
 
     - name: Set up Node.js
