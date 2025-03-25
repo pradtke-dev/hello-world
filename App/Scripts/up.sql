@@ -1,3 +1,12 @@
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'todoDb')
+  BEGIN
+    CREATE DATABASE todoDb;
+  END
+GO
+
+USE todoDb;
+GO
+
 IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
