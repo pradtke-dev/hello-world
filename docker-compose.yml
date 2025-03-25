@@ -14,7 +14,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
   sql-db:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    constainer_name: sql-db
+    container_name: sql-db
     environment:
       - SA_PASSWORD=yourStrong(!)Password
       - ACCEPT_EULA=Y
