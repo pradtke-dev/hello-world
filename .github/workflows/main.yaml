@@ -82,6 +82,12 @@ jobs:
     - name: Start container
       run: IMAGE=${{ env.CANDIDATE }} ASPNETCORE_ENVIRONMENT=Test docker compose --profile test up -d
 
+    - name: Run migrations
+      run: |
+        pushd App
+        dotnet ef database update
+        popd
+
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
