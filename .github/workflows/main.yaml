@@ -83,11 +83,10 @@ jobs:
       run: IMAGE=${{ env.CANDIDATE }} ASPNETCORE_ENVIRONMENT=Test docker compose --profile test up -d
 
     - name: Run migrations
-      run: |
-        dotnet tool install --global dotnet-ef
-        pushd App
-        dotnet ef database update
-        popd
+      uses: microsoft/sql-action@v1
+      with:
+        connection-string: ${{ secrets.SQL_CONNECTION_STRING }}
+        script-path: App/Scripts/up.sql
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
