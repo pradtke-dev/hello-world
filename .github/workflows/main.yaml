@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -62,7 +62,7 @@ jobs:
         docker push ${{ env.CANDIDATE }}
     
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
     permissions:
       contents: read
@@ -120,8 +120,9 @@ jobs:
         docker tag $CANDIDATE $LATEST_TAG_APP
         docker push $LATEST_TAG_APP
 
+  # TODO: Datenbank zu Azure hinzufügen.
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: test
     steps:
     - name: Azure Login
