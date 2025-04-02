@@ -80,7 +80,10 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Start container
-      run: IMAGE=${{ env.CANDIDATE }} ASPNETCORE_ENVIRONMENT=Test docker compose --profile test up -d
+      run: |
+        $env:IMAGE=$env:CANDIDATE
+        $env:ASPNETCORE_ENVIRONMENT="Test"
+        docker compose --profile test up -d
 
     - name: Run migrations
       run: |
