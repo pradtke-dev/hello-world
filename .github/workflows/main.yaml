@@ -125,13 +125,10 @@ jobs:
     runs-on: self-hosted
     needs: test
     steps:
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'as-pradtke-hello-world'
-        images: '${{ env.LATEST_TAG_APP }}'
+      - name: Set Docker host
+        run: |
+          docker ps
+          docker run hello-world
