@@ -1,4 +1,5 @@
 ﻿using Hello.Pages;
+using Hello.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,7 +15,7 @@ public class TodoModelTests
     public void Init()
     {
         var loggerMock = new Mock<ILogger<TodoModel>>();
-        TodoModel = new TodoModel(loggerMock.Object);
+        TodoModel = new TodoModel(loggerMock.Object, new InMemoryTodoStore());
     }
     
     [TestMethod]
