@@ -120,10 +120,9 @@ jobs:
     - name: Tag container as latest    
       if: success()
       run: |
-        docker tag $CANDIDATE $LATEST_TAG_APP
-        docker push $LATEST_TAG_APP
+        docker tag $env:CANDIDATE $env:LATEST_TAG_APP
+        docker push $env:LATEST_TAG_APP
 
-  # TODO: Datenbank zu Azure hinzufügen.
   deploy:
     runs-on: self-hosted
     needs: test
@@ -131,7 +130,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set Docker host
+      - name: Run Docker Compose
         run: |
-          docker ps
-          docker run hello-world
+          $env:IMAGE=$env:LATEST_TAG_APP
+          $env:ASPNETCORE_ENVIRONMENT="Production"
+          docker compose --profile production up -d
