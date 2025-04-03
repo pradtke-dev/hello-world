@@ -58,7 +58,7 @@ jobs:
     
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ env.CANDIDATE }} .
+        docker build -t ${{ env.CANDIDATE }} App
         docker push ${{ env.CANDIDATE }}
     
   test:
