@@ -1,5 +1,8 @@
 set LOCAL_DEV_DIR=%cd%
-set APP_DIR=%LOCAL_DEV_DIR%\App
 set INTEGRATION_TESTS_DIR=%LOCAL_DEV_DIR%\integration-tests
 
-wt new-tab -p "Command Prompt" -d %LOCAL_DEV_DIR% docker compose --profile development up ; new-tab -d %APP_DIR% dotnet watch ; new-tab -d %INTEGRATION_TESTS_DIR% 
+docker compose --profile development down
+
+wt new-tab -p "docker" -d %LOCAL_DEV_DIR% docker compose --profile development up ^
+    ; new-tab -p "dotnet" -d %LOCAL_DEV_DIR% cmd /k run-local.bat ^
+    ; new-tab -p "cypress" -d %LOCAL_DEV_DIR% cmd /k run-cypress.bat

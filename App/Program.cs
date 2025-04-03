@@ -7,8 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<ITodoStore, TodoStore>();
-builder.Services.AddDbContext<TodoContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<TodoContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions => {
+        sqlOptions.EnableRetryOnFailure();
+    });
+});
 
 var app = builder.Build();
 
