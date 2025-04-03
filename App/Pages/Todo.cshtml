@@ -7,11 +7,12 @@
 <ul data-cy="todo-list">
   @foreach (var todo in Model.Todos)
   {
-    <li>@todo</li>
+    <li>@todo.Description @(@todo.Priority == 0 ? "" : $"({@todo.Priority})")</li>
   }
 </ul>
 <form method="post">
-  <input data-cy="add-todo" name="todo-text"/>
+  <input data-cy="todo-text" name="todo-text"/>
+  <input data-cy="todo-priority" name="todo-priority"/>
   <button data-cy="submit-todo" type="submit">Add</button>
 
   <button data-cy="clear-todos" type="submit" asp-page-handler="Clear">Clear</button>

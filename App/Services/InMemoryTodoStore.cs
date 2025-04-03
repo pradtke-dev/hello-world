@@ -3,15 +3,15 @@ namespace Hello.Services;
 
 public class InMemoryTodoStore : ITodoStore
 {
-    private readonly List<string> _todos = [];
+    private readonly List<TodoItem> _todos = [];
 
-    public void AddTodo(string todo)
+    public void AddTodo(string todo, int priority)
     {
         if (string.IsNullOrWhiteSpace(todo)) return;
-        _todos.Add(todo);
+        _todos.Add(new TodoItem { Id = _todos.Count, Description = todo, Priority = priority });
     }
 
-    public List<string> GetTodos()
+    public List<TodoItem> GetTodos()
     {
         return _todos;
     }

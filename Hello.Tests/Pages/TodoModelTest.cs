@@ -34,10 +34,10 @@ public class TodoModelTests
     public void OnPost_ValidTodo_AddsTodoToList()
     {
         // Simulate setting the todo directly
-        TodoModel.Todos.Add("Test Todo");
+        TodoModel.Todos.Add(new TodoItem{ Description = "Test Todo" });
 
         // Assert
         Assert.AreEqual(1, TodoModel.Todos.Count);
-        Assert.AreEqual("Test Todo", TodoModel.Todos[0]);
+        Assert.AreEqual("Test Todo", TodoModel.Todos[0].Description);
     }
 }

@@ -1,21 +1,22 @@
-﻿namespace Hello.Services;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Hello.Services;
 
 public class TodoStore(TodoContext todoContext) : ITodoStore
 {
-    public void AddTodo(string todo)
+    public void AddTodo(string todo, int priority)
     {
-        todoContext.TodoItems.Add(new TodoItem { Description = todo });
+        todoContext.TodoItems.Add(new TodoItem { Description = todo, Priority = priority});
         todoContext.SaveChanges();
     }
 
-    public List<string> GetTodos()
+    public List<TodoItem> GetTodos()
     {
-        return todoContext.TodoItems.Select(todo => todo.Description).ToList();
+        return todoContext.TodoItems.ToList();
     }
 
     public void ClearTodos()
     {
-        todoContext.TodoItems.RemoveRange(todoContext.TodoItems);
-        todoContext.SaveChanges();
+        todoContext.TodoItems.ExecuteDelete();
     }
 }
