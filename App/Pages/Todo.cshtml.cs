@@ -22,11 +22,11 @@ public class TodoModel : PageModel
     public void OnPost()
     {
         var todo = Request.Form["todo-text"];
-        var priority = Request.Form["todo-priority"];
+        var priorityText = Request.Form["todo-priority"];
         if (StringValues.IsNullOrEmpty(todo)) return;
-        TryParse(priority, out var priorityInt);
+        Enum.TryParse<Priority>(priorityText, out var priority);
             
-        _todoStore.AddTodo(todo!, priorityInt);
+        _todoStore.AddTodo(todo!, priority);
     }
 
     public IActionResult OnPostClear()
