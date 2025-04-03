@@ -87,7 +87,8 @@ jobs:
 
     - name: Run migrations
       run: |
-        docker cp App/Scripts/up.sql sql-db:/tmp/migration.sql
+        cat App/Scripts/upDatabase.sql, App/Scripts/up.sql | Set-Content App/Scripts/migration.sql
+        docker cp App/Scripts/migration.sql sql-db:/tmp/migration.sql
         docker exec -i sql-db /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'yourStrong(!)Password' -i /tmp/migration.sql
 
     - name: Set up Node.js

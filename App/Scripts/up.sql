@@ -1,13 +1,4 @@
-IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'todoDb')
-  BEGIN
-    CREATE DATABASE todoDb;
-  END
-GO
-
-USE todoDb;
-GO
-
-IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
         [MigrationId] nvarchar(150) NOT NULL,
@@ -39,5 +30,23 @@ BEGIN
     VALUES (N'20250325103802_InitialCreate', N'9.0.3');
 END;
 
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250403110842_AddColumnPriority'
+)
+BEGIN
+    ALTER TABLE [TodoItems] ADD [Priority] int NOT NULL DEFAULT 0;
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250403110842_AddColumnPriority'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20250403110842_AddColumnPriority', N'9.0.3');
+END;
+
 COMMIT;
 GO
+
