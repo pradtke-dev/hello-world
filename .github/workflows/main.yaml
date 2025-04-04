@@ -79,6 +79,13 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: integration-tests/package-lock.json
+
     - name: Start container
       run: |
         $env:IMAGE=$env:CANDIDATE
@@ -90,15 +97,9 @@ jobs:
         cat App/Scripts/upDatabase.sql, App/Scripts/up.sql, App/Scripts/seedData.sql | Set-Content App/Scripts/migration.sql
         docker cp App/Scripts/migration.sql sql-db:/tmp/migration.sql
         docker exec -i sql-db /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'yourStrong(!)Password' -i /tmp/migration.sql
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        cache: 'npm'
-        cache-dependency-path: integration-tests/package-lock.json
     
     - name: Run integration tests
+      if: success()
       run: |
         pushd integration-tests
         npm install
