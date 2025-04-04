@@ -4,7 +4,7 @@ namespace Hello.Services;
 
 public class TodoStore(TodoContext todoContext) : ITodoStore
 {
-    public void AddTodo(string todo, Priority priority)
+    public void AddTodo(string todo, int priority)
     {
         todoContext.TodoItems.Add(new TodoItem { Description = todo, Priority = priority});
         todoContext.SaveChanges();

@@ -24,7 +24,7 @@ public class TodoModel : PageModel
         var todo = Request.Form["todo-text"];
         var priorityText = Request.Form["todo-priority"];
         if (StringValues.IsNullOrEmpty(todo)) return;
-        Enum.TryParse<Priority>(priorityText, out var priority);
+        TryParse(priorityText, out var priority);
             
         _todoStore.AddTodo(todo!, priority);
     }
