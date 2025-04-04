@@ -97,7 +97,7 @@ jobs:
         $ErrorActionPreference = "Stop"
         cat App/Scripts/upDatabase.sql, App/Scripts/up.sql, App/Scripts/seedData.sql | Set-Content App/Scripts/migration.sql
         docker cp App/Scripts/migration.sql sql-db:/tmp/migration.sql
-        docker exec -i sql-db /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'yourStrong(!)Password' -i /tmp/migration.sql
+        docker exec -i sql-db /opt/mssql-tools18/bin/sqlcmd -b -C -S localhost -U sa -P 'yourStrong(!)Password' -i /tmp/migration.sql
         $LASTEXITCODE
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     
