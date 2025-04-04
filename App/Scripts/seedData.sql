@@ -1,6 +1,6 @@
 INSERT INTO TodoItems (Description, Priority) VALUES
-('Buy groceries', "Low"),
-('Clean the house', "High"),
+('Buy groceries', 'Low'),
+('Clean the house', 'High'),
 ('Finish project report', 2),
 ('Call the plumber', 0),
 ('Schedule a dentist appointment', 1),
