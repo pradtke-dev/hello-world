@@ -49,7 +49,7 @@ END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20250403141832_ChangePriorityToEnum'
+    WHERE [MigrationId] = N'20250403150248_PriorityAsEnum'
 )
 BEGIN
     DECLARE @var sysname;
@@ -58,16 +58,41 @@ BEGIN
     INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
     WHERE ([d].[parent_object_id] = OBJECT_ID(N'[TodoItems]') AND [c].[name] = N'Priority');
     IF @var IS NOT NULL EXEC(N'ALTER TABLE [TodoItems] DROP CONSTRAINT [' + @var + '];');
-    ALTER TABLE [TodoItems] ALTER COLUMN [Priority] nvarchar(255) NOT NULL;
+    ALTER TABLE [TodoItems] ALTER COLUMN [Priority] nvarchar(255) NULL;
 END;
 
 IF NOT EXISTS (
     SELECT * FROM [__EFMigrationsHistory]
-    WHERE [MigrationId] = N'20250403141832_ChangePriorityToEnum'
+    WHERE [MigrationId] = N'20250403150248_PriorityAsEnum'
 )
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20250403141832_ChangePriorityToEnum', N'9.0.3');
+    VALUES (N'20250403150248_PriorityAsEnum', N'9.0.3');
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250404111718_RevertPriorityTypeToInt'
+)
+BEGIN
+    DECLARE @var1 sysname;
+    SELECT @var1 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[TodoItems]') AND [c].[name] = N'Priority');
+    IF @var1 IS NOT NULL EXEC(N'ALTER TABLE [TodoItems] DROP CONSTRAINT [' + @var1 + '];');
+    EXEC(N'UPDATE [TodoItems] SET [Priority] = 0 WHERE [Priority] IS NULL');
+    ALTER TABLE [TodoItems] ALTER COLUMN [Priority] int NOT NULL;
+    ALTER TABLE [TodoItems] ADD DEFAULT 0 FOR [Priority];
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20250404111718_RevertPriorityTypeToInt'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20250404111718_RevertPriorityTypeToInt', N'9.0.3');
 END;
 
 COMMIT;

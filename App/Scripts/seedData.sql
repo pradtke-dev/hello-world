@@ -1,7 +1,3 @@
-INSERT INTO TodoItems (Description, Priority) VALUES
-('Buy groceries', 'Low');
-INSERT INTO TodoItems ([Description], [Priority]) VALUES
-('Clean the house', 'High');
 INSERT INTO TodoItems ([Description], [Priority]) VALUES
 ('Finish project report', 2);
 INSERT INTO TodoItems ([Description], [Priority]) VALUES
